@@ -1,0 +1,48 @@
+---
+title: "Colorado EnviroScreen Data Processing"
+author: "dan carver"
+date: '2022-06-10'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Colorado EnviroScreen 
+
+This document is intended to guide users in the generation of the Colorado Enviroscreen Dataset. This dataset is should be regenerated when new input material is aquired. 
+
+
+## Setting up the project workspace 
+- getting the code 
+- creating an rProject 
+- sourcing functions 
+- creating foldering structure 
+- assign tidy census key 
+
+## data access 
+- direct calls 
+  - acs data 
+    - geographies 
+    - census data 
+- transfer content 
+  - description on the file format of each input dataset 
+  - some datasets have been process to the format require for running within the tool. Often this is just moving from .xlsx to .csv but sometime more processing was applied. I've not included those processing steps in the codebase and it will be up to the user to manager those transformations. 
+  
+
+## generalized workflow 
+- overview of classification structure 
+- calculation of component scores 
+- calculation of group component scores 
+- calcualtion of final scores 
+
+## details workflow 
+- helper functions 
+- individuals indicators 
+  - general structure of the function 
+    - inputs : geometry, processingLevel, overwrite 
+    - outputs : saves a csv, returns a dataframe with GEOID and values for indicator
+
+
+mines and surface water do not require file inputs 

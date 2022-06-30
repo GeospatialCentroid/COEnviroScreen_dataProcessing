@@ -1,0 +1,20 @@
+Package: ColoradoEnviroScreen
+Type: Package
+Title: What the Package Does (Title Case)
+Version: 0.1.0
+Author: Dan Carver, Caitlin Mothes, Margaret Horton
+Maintainer: Dan Carver <carverd@colostate.edu>
+Description: Container library for all the processing and score functions
+    connected to the Colorado EnviroScreen environmental justice mapping tool. 
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Imports:
+  dplyr,
+  sf,
+  tigris,
+  vroom,
+  tidycensus
+Suggests:
+  tmap
+RoxygenNote: 7.1.2
