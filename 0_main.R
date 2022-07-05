@@ -26,7 +26,7 @@ createFolderStructure()
 getGeometryLayers()
 
 #set version
-version <- 1.1
+version <- 1
 
 # set census API key
 # tidycensus::census_api_key(key = "your key")
@@ -38,13 +38,21 @@ version <- 1.1
 geoms <- c("county","censusTract","censusBlockGroup")
 
 # running single component
+tic()
 processData(processingLevel=geoms[1],
             version = version,
             overwrite = FALSE)
+toc()
 
 # running all components
-##Figure out a purrr implication using the map function
-
+# for(i in geoms){
+#   print(i)
+#   tic()
+#   processData(processingLevel=i,
+#               version = version,
+#               overwrite = FALSE)
+#   toc()
+# }
 
 # shiny Elements ------------------------------------------------
 shinyData(removeNativeLand = TRUE,

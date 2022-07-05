@@ -20,45 +20,6 @@ createFolderStructure <- function(fileLocation = NULL){
   if(!dir.exists(dir1)){
       dir.create(dir1)
     }
-  # individual file folders
-  ## indicator datasets
-  inputs <- c(
-    "asthma"
-    ,"CDC_places"
-    ,"lifeExpectency"
-    ,"drinkingWater"
-    ,"drought"
-    ,"EJScreen"
-    ,"floodPlains"
-    ,"haps"
-    ,"heartDisease"
-    ,"heatDays"
-    ,"lowBirthWeight"
-    ,"mining"
-    ,"noise"
-    ,"oilAndGas"
-    ,"surfaceWater"
-    ,"wildfire")
-  for(i in inputs){
-    dir1a <- paste0(dir1, "/", i)
-    if(!dir.exists(dir1a)){
-      dir.create(dir1a)
-    }
-  }
-  # spatial data
-  spatialLayers <- c("justice40")
-  # generate folders
-  dir1b <- paste0(dir1, "/spatialLayers")
-  if(!dir.exists(dir1b)){
-    dir.create(dir1b)
-  }
-  for(i in spatialLayers){
-    dir1b <- paste0(dir1, "/spatialLayers/", i)
-    if(!dir.exists(dir1b)){
-      dir.create(dir1b)
-    }
-  }
-
   # outputs -----------------------------------------------------------------
   dir2 <- paste0(dir, "/output")
   if(!dir.exists(dir2)){

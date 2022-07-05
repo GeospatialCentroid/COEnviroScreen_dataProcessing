@@ -9,40 +9,99 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Colorado EnviroScreen 
+# Colorado EnviroScreen
 
-This document is intended to guide users in the generation of the Colorado Enviroscreen Dataset. This dataset is should be regenerated when new input material is aquired. 
+Colorado EnviroScreen is a data processing code base with a public facing shiny application that highlights the spatial variability of specific Environmental Health and Environmental Justice challenges throughout Colorado. This document is intended to guide users in the generation of the Colorado EnviroScreen dataset that supports functions as the input to the shiny applications.
+
+This content was developed by the Geospatial Centroid at Colorado State University under the direction and support of the Rojos Pulbic Health Lab at CSU, Institute for the Built Environment at CSU, and the Colorado Department of Public Health and Environment.
+
+Questions and comments can be directed to Dan Carver at carverd@colostate.edu
 
 
-## Setting up the project workspace 
-- getting the code 
-- creating an rProject 
-- sourcing functions 
-- creating foldering structure 
-- assign tidy census key 
+## Vision
 
-## data access 
-- direct calls 
-  - acs data 
-    - geographies 
-    - census data 
-- transfer content 
-  - description on the file format of each input dataset 
-  - some datasets have been process to the format require for running within the tool. Often this is just moving from .xlsx to .csv but sometime more processing was applied. I've not included those processing steps in the codebase and it will be up to the user to manager those transformations. 
-  
+The code base for generating the Colorado EnviroScreen score dataset utilizes a hierarchical workflow that matches general scoring presented on the application
+- EnviroScreen Score
+  - Group Component Scores
+    - Component Scores
+      - individual Indicator Scores
 
-## generalized workflow 
-- overview of classification structure 
-- calculation of component scores 
-- calculation of group component scores 
-- calcualtion of final scores 
+This allowed for a module approach to the development. The primary motivator for this process was to allow for the quick regeneration of all elements if a single input feature was changed. This was accomplished by writing out intermediates at ever step in the process. All data processing functions have an version and overwrite parameter with give the user the specificity needed to control how much data is regenerated or compiled from the existing intermediate file. In short, the code base is going to included what's already there unless told otherwise. This keeps it fast and flexible.
 
-## details workflow 
-- helper functions 
-- individuals indicators 
-  - general structure of the function 
-    - inputs : geometry, processingLevel, overwrite 
+As with any codebase, this will require some maintenance and adjustment going forward. We hope that what is provided is a viable starting place for a long-lived and successful project.
+
+## About this Document
+
+This document has x major sections
+
+- Setting up the local environment
+- running the processing code
+- details on specific functions
+- code standards 
+
+
+## Setting up the local environment
+
+The data processing code is stored in the Geospatial Centroid's GitHub, and needs to be downloaded or cloned to render in the local environment.
+https://github.com/GeospatialCentroid/COEnviroScreen_dataProcessing
+We've utilized a .rproj file to organize this work, and we recommend that you do the same.
+
+With the repository on your local device, open the R Project file and then the `0_main.R` file. Barring special use cases, all data connected to the EnviroScreen score and shiny applications can be generated through edits within this script alone.
+
+## Running 0_main
+
+### loading packages/functions
+
+We utilize the pacman library to load all the required packages. The helper function `loadFunctions()` can be called to load the 40 plus functions associated with the codebase.
+
+### Project file folder structure.
+
+**R** : The folder for all functions connected to the data processing code base. All functions at this level are associated with the production of a score value.
+
+**R/Utilities**: These helper functions are generally called from other functions and are unlikely to require any adjustment of input parameters. These functions also do not produce any indicator score values.
+
+### Create file folder structure
+
+As the codebase is writing out numerous intermediate files, we've opted to generate a standardized file folder structure that accounts for inputs, outputs, and shiny specific features. This folder structure also enables the development of version specific outputs. 	
+
+
+## Setting up the project workspace
+- getting the code
+- creating an rProject
+- sourcing functions
+- creating foldering structure
+- assign tidy census key
+
+
+
+
+
+## data access
+- direct calls
+  - acs data
+    - geographies
+    - census data
+- transfer content
+  - description on the file format of each input dataset
+  - some datasets have been process to the format require for running within the tool. Often this is just moving from .xlsx to .csv but sometime more processing was applied. I've not included those processing steps in the codebase and it will be up to the user to manager those transformations.
+
+
+## generalized workflow
+- overview of classification structure
+- calculation of component scores
+- calculation of group component scores
+- calcualtion of final scores
+
+## details workflow
+- helper functions
+- individuals indicators
+  - general structure of the function
+    - inputs : geometry, processingLevel, overwrite
     - outputs : saves a csv, returns a dataframe with GEOID and values for indicator
 
 
-mines and surface water do not require file inputs 
+## Code Conventions
+
+
+
+mines and surface water do not require file inputs
