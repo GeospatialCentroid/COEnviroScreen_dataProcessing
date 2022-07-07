@@ -8,7 +8,7 @@
 #'
 #' @return : dataframe with geoid and resulting data
 #'
-getOtherHAPS <- function(filePath, geometry, processingLevel,version,overwrite=FALSE){
+getOtherHAPS <- function(filePath, geometry, processingLevel,version,overwrite){
   # create version dir
   dir <- paste0("data/output/haps/",version)
   if(!dir.exists(dir)){

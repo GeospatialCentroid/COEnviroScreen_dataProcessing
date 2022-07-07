@@ -7,7 +7,7 @@
 #'
 #' @return : dataframe with geoid and resulting data
 
-getDrinkingWater <- function(geometry, processingLevel,version, overwrite = FALSE){
+  getDrinkingWater <- function(geometry, processingLevel,version, overwrite){
   # create version dir
   dir <- paste0("data/output/drinkingWater/",version)
   if(!dir.exists(dir)){

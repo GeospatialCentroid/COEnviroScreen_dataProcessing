@@ -3,7 +3,7 @@
 ###
 
 # download data processing code base
-# download data from https://github.com/GeospatialCentroid/Colorado_EnviroScreen_Data
+# download data from https://github.com/GeospatialCentroid/COEnviroScreen_dataInput
 #
 
 
@@ -35,23 +35,18 @@ version <- 1
 
 # process data  -----------------------------------------------------------
 ## run single or multiple geometries
-geoms <- c("county","censusTract","censusBlockGroup")
+  geoms <- c("county","censusTract","censusBlockGroup")
 
 # running single component
-tic()
 processData(processingLevel=geoms[1],
             version = version,
             overwrite = FALSE)
-toc()
-
 # running all components
 # for(i in geoms){
 #   print(i)
-#   tic()
 #   processData(processingLevel=i,
 #               version = version,
 #               overwrite = FALSE)
-#   toc()
 # }
 
 # shiny Elements ------------------------------------------------

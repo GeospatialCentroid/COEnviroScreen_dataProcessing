@@ -1,6 +1,6 @@
 
 
-enviromentalExposures <- function(geometry, processingLevel, ejscreen, version, overwrite){
+  enviromentalExposures <- function(geometry, processingLevel, ejscreen, version, overwrite){
 
   file <- paste0("data/output/enviroscreenScore/", processingLevel,"/enviromentalExposures_",version,".csv")
 

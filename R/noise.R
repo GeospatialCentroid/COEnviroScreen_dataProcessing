@@ -7,7 +7,7 @@
 #' @param overwrite : binary to overwrite existing content
 #'
 #' @return : dataframe with geoid and resulting data
-getNoise <- function(filePath, geometry, processingLevel,version, overwrite = FALSE){
+getNoise <- function(filePath, geometry, processingLevel,version, overwrite){
     # create version dir
   dir <- paste0("data/output/noise/",version)
   if(!dir.exists(dir)){

@@ -8,7 +8,7 @@
 #'
 #' @return : dataframe with geoid and resulting data
 
-getPM25 <- function(filePath, geometry, processingLevel,version, overwrite = FALSE){
+getPM25 <- function(filePath, geometry, processingLevel,version, overwrite){
   # create version dir
   dir <- paste0("data/output/pm25/",version)
   if(!dir.exists(dir)){

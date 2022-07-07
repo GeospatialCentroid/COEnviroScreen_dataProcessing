@@ -13,7 +13,7 @@
 #' @return data frame
 #'
 
-acs <- function(processingLevel, version, overwrite = FALSE){
+acs <- function(processingLevel, version, overwrite){
   # create version dir
   dir <- paste0("data/output/acs/",version)
   if(!dir.exists(dir)){

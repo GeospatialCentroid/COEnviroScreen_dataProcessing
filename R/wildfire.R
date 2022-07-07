@@ -8,7 +8,7 @@
 #'
 #' @return : dataframe with geoid and resulting data
 
-getWildfire <- function(filePath, geometry, processingLevel, version, overwrite = overwrite){
+getWildfire <- function(filePath, geometry, processingLevel, version, overwrite){
   # create version dir
   dir <- paste0("data/output/wildfire/",version)
   if(!dir.exists(dir)){

@@ -13,7 +13,7 @@
 #'
 #' @return a dataframe
 
-ej_screen <- function(filePath, geometry, processingLevel, version,  overwrite=FALSE){
+ej_screen <- function(filePath, geometry, processingLevel, version,  overwrite){
   # create version dir
   dir <- paste0("data/output/EJScreen/",version)
   if(!dir.exists(dir)){

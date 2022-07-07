@@ -46,7 +46,7 @@ getPlacesData <- function(filePath, processingLevel, geometry, version, overwrit
       diabetes = mean(`Mental health not good for >=14 days among adults aged >=18 years`,na.rm=TRUE)
     )
 
-  # format for census tract
+  # format for census block group
   if(i == 12){
     geom <- st_drop_geometry(geometry)%>%
       dplyr::mutate(geoid2 = str_sub(GEOID, 1,11))%>%

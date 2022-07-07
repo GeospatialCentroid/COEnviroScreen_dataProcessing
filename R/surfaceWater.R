@@ -9,7 +9,7 @@
 #' @return : dataframe with geoid and resulting data
 
 
-getSurfaceWater <- function(filePath,processingLevel, geometry, version, overwrite = FALSE){
+getSurfaceWater <- function(filePath,processingLevel, geometry, version, overwrite){
 
   # create version dir
   dir <- paste0("data/output/surfaceWater/",version)
@@ -53,7 +53,9 @@ getSurfaceWater <- function(filePath,processingLevel, geometry, version, overwri
         Assessed_char = as.character(Assessed))
 
     #### Overlay streams and geographic boundaries ----
-    geometry <- geometry %>% st_transform(crs = st_crs(stream_uses)) %>% select("GEOID")
+    geometry <- geometry %>%
+      st_transform(crs = st_crs(stream_uses)) %>%
+      select("GEOID")
 
 
     geom <- data.frame(matrix(nrow = nrow(geometry), ncol = 3))

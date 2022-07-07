@@ -9,7 +9,7 @@
 #' @return : dataframe with geoid and resulting data
 
 
-getDrought <- function(filePath, processingLevel, geometry, version, overwrite){
+getDrought <- function(filePath, geometry, processingLevel, version, overwrite){
   # create version dir
   dir <- paste0("data/output/drought/",version)
   if(!dir.exists(dir)){

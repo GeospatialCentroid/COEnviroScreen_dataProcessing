@@ -4,7 +4,7 @@
 # carverd@colostate.edu
 ###
 
-getShinyData <- function(removeNativeLand, removeZeroPop, version, spanish = FALSE){
+getShinyData <- function(removeNativeLand, removeZeroPop, version, spanish){
   ###
   # takes outputs from the enviroscreen scoring process and combines and renames
   # for use in the shiny app
