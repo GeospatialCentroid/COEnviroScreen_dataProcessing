@@ -35,19 +35,22 @@ version <- 1
 
 # process data  -----------------------------------------------------------
 ## run single or multiple geometries
-  geoms <- c("county","censusTract","censusBlockGroup")
+geoms <- c("county","censusTract","censusBlockGroup")
 
 # running single component
+tic()
 processData(processingLevel=geoms[1],
             version = version,
             overwrite = FALSE)
-# running all components
-# for(i in geoms){
-#   print(i)
-#   processData(processingLevel=i,
-#               version = version,
-#               overwrite = FALSE)
-# }
+toc()
+
+#   running all components
+for(i in geoms){
+  print(i)
+  processData(processingLevel=i,
+              version = version,
+              overwrite = FALSE)
+}
 
 # shiny Elements ------------------------------------------------
 shinyData(removeNativeLand = TRUE,

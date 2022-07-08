@@ -1,6 +1,6 @@
 
 
-  enviromentalExposures <- function(geometry, processingLevel, ejscreen, version, overwrite){
+enviromentalExposures <- function(geometry, processingLevel, ejscreen, version, overwrite){
 
   file <- paste0("data/output/enviroscreenScore/", processingLevel,"/enviromentalExposures_",version,".csv")
 
@@ -48,7 +48,7 @@
                    geometry = geometry,
                    processingLevel = processingLevel,
                    version = version,
-                   overwrite = TRUE)
+                   overwrite = overwrite)
 
     # combine datasets
     dataframes <- list(d1,d2,d3,d4,d5,d6,d7)

@@ -38,8 +38,9 @@ processData <- function(processingLevel, version, overwrite){
                                           version = version,
                                           ejscreen = ejscreen,
                                           processingLevel = processingLevel,
-                                          overwrite = overwrite)
-    write_csv(x = envExposures, f1)
+                                          overwrite = TRUE)
+    ### df is save within the function -- see if this is true for all component scores.
+    # write_csv(x = envExposures, f1)
   }
 
 
