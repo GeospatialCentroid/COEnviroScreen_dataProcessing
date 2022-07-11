@@ -57,9 +57,9 @@ getShinyData <- function(removeNativeLand, removeZeroPop, version, spanish){
   # read in enviroscreen score files
   c_data <- read_csv(paste0("data/output/enviroscreenScore/county_",version,".csv"))%>%
     dplyr::left_join(county, by = "GEOID")
-  ct_data <- read_csv(paste0("data/enviroscreenScore/censusTract_",version,".csv"))%>%
+  ct_data <- read_csv(paste0("data/output/enviroscreenScore/censusTract_",version,".csv"))%>%
     dplyr::left_join(censusTract, by = "GEOID")
-  cbg_data <- read_csv(paste0("data/enviroscreenScore/censusBlockGroup_",version,".csv"))%>%
+  cbg_data <- read_csv(paste0("data/output/enviroscreenScore/censusBlockGroup_",version,".csv"))%>%
     dplyr::left_join(censusBlockGroup, by = "GEOID")
 
 
@@ -345,19 +345,19 @@ getShinyData <- function(removeNativeLand, removeZeroPop, version, spanish){
       sf::st_as_sf()
 
     # add label for Coal, oil/gas, rural, justice 40, and di community -------------------------------------
-    coal <- readRDS("data/coalCommunities/coalCommunities.rds")%>%
+    coal <- readRDS("data/shinyContent/coalCommunity.rds")%>%
       dplyr::select("GEOID","Comunidad con carbón" = "coal")%>%
       st_drop_geometry()
-    og <- readRDS("data/oilgasCommunities/oilgasCommunities.rds")%>%
+    og <- readRDS("data/shinyContent/oilgasCommunity.rds")%>%
       dplyr::select("GEOID","Comunidad con petróleo y gas" = "oilGas")%>%
       st_drop_geometry()
-    rural <- readRDS("data/ruralCommunities/ruralCommunities.rds")%>%
+    rural <- readRDS("data/shinyContent/ruralCommunity.rds")%>%
       dplyr::select("GEOID","Comunidad rural" = "rural")%>%
       st_drop_geometry()
-    justice40 <- readRDS("data/justice40/justice40.rds") %>%
+    justice40 <- readRDS("data/shinyContent/justice40.rds") %>%
       dplyr::select("GEOID","Comunidad de Justice40" = "Identified.as.disadvantaged")%>%
       st_drop_geometry()
-    diCommunity <- readRDS("data/diCommunities/diCommunities.rds")%>%
+    diCommunity <- readRDS("data/shinyContent/diCommunities.rds")%>%
       dplyr::select("GEOID","Comunidad afectada de manera desproporcionada" = "DI_community")%>%
       dplyr::mutate("Comunidad afectada de manera desproporcionada" = case_when(
         `Comunidad afectada de manera desproporcionada` == 1 ~ TRUE

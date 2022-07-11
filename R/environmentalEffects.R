@@ -40,7 +40,7 @@ enviromentalEffects <- function(geometry, processingLevel, ejscreen, version, ov
   # write out content
   write_csv(df, file = file)
   }else{
-    df <- read.csv(file)
+    df <- read_csv(file)
   }
   return(df)
 }

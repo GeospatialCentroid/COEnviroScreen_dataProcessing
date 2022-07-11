@@ -81,7 +81,7 @@ getDI <- function(removeNativeLand, overwrite){
 
 
     # read in geometry for census block groups
-    geom <- sf::st_read("data/output/spatialLayers/censusBlockGroup/coloradoCensusBlockGroups.geojson")%>%
+    geom <- sf::st_read("data/output/spatialLayers/censusBlockGroups/coloradoCensusBlockGroups.geojson")%>%
       dplyr::select(GEOID)%>%
       dplyr::left_join(bg_co, by = "GEOID")%>%
       dplyr::filter(Min_FLAG != 0 | FLP_FLAG != 0 | Burdened_FLAG !=0 )%>%

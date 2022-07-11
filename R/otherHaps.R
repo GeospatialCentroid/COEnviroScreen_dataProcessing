@@ -101,7 +101,7 @@ getOtherHAPS <- function(filePath, geometry, processingLevel,version,overwrite){
         dplyr::summarise(otherHAPS = sum(otherHAPS))
 
 
-      write_csv(geom, file = file,row.names = FALSE )
+      write_csv(geom, file = file)
     }else{
       b1 <- bufferObjects(bufferFeature = d5,
                           g2 = geom2,

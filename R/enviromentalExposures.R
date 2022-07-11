@@ -4,7 +4,7 @@ enviromentalExposures <- function(geometry, processingLevel, ejscreen, version, 
 
   file <- paste0("data/output/enviroscreenScore/", processingLevel,"/enviromentalExposures_",version,".csv")
 
-  if(!file.exists(file)|| overwrite == TRUE){
+  if(!file.exists(file)||overwrite == TRUE){
 
     cat("Ozone")
     d1 <- getOzone(filePath = "data/input/epa_cmaq/2017_ozone_daily_8hour_maximum.txt.gz" ,
@@ -63,7 +63,7 @@ enviromentalExposures <- function(geometry, processingLevel, ejscreen, version, 
     #write out content
     write_csv(df, file = file)
   }else{
-    df <- read.csv(file)
+    df <- read_csv(file)
   }
   return(df)
 }

@@ -25,9 +25,9 @@ getLowBirthWeight <- function(filePath, geometry, processingLevel, version, over
 
   # process birthweight data
   d1 <- read_csv(filePath) %>%
-    # set leading zero to match geoID in Geom object
-    dplyr::mutate(GEOID = paste0("0",TRACT_FIPS))%>%
-    dplyr::select(GEOID, LWB_ADJRATE)
+    # # set leading zero to match geoID in Geom object
+    # dplyr::mutate(GEOID = paste0("0",TRACT_FIPS))%>%
+    dplyr::select(GEOID = TRACT_FIPS, LWB_ADJRATE)
 
   ### select processing level by comparing length of GEOID between objects
   if(nchar(geometry$GEOID[1]) >= nchar(d1$GEOID[1])){

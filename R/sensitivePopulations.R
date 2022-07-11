@@ -61,8 +61,9 @@ sensitivePopulations <- function(geometry, processingLevel, ejscreen, version, o
       select(contains("_pcntl"))%>%
       apply(MARGIN = 1, FUN = gm_mean)
     #write out content
+    write_csv(df, file)
   }else{
-    df <- read.csv(file)
+    df <- read_csv(file)
   }
     return(df)
 }

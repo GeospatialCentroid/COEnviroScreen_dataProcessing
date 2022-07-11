@@ -29,74 +29,44 @@ processData <- function(processingLevel, version, overwrite){
 
 
   # Exposures ---------------------------------------------------------------
-  f1 <- paste0("data/output/enviroscreenScore/",processingLevel,"/enviromentalExposures_",version,".csv")
-
-  if(file.exists(f1) & isFALSE(overwrite)){
-    envExposures <- read_csv(f1)
-  }else{
-    envExposures <- enviromentalExposures(geometry = geometry,
+  envExposures <- enviromentalExposures(geometry = geometry,
                                           version = version,
                                           ejscreen = ejscreen,
                                           processingLevel = processingLevel,
-                                          overwrite = TRUE)
-    ### df is save within the function -- see if this is true for all component scores.
-    # write_csv(x = envExposures, f1)
-  }
+                                          overwrite = overwrite)
 
 
-    # Environmental Effects ---------------------------------------------------
-  f2 <- paste0("data/output/enviroscreenScore/",processingLevel,"/enviromentalEffects_",version,".csv")
-  if(file.exists(f2) & overwrite == overwrite){
-    envEffects <- read_csv(f2)
-  }else{
-    envEffects <- enviromentalEffects(geometry = geometry,
+  # Environmental Effects ---------------------------------------------------
+  envEffects <- enviromentalEffects(geometry = geometry,
                                       version = version,
                                       processingLevel = processingLevel,
                                       ejscreen = ejscreen,
                                       overwrite = overwrite)
-    write_csv(x = envEffects, f2)
-  }
 
 
   # Climate Impacts ---------------------------------------------------------
-  f3 <- paste0("data/output/enviroscreenScore/",processingLevel,"/climate_",version,".csv")
-  if(file.exists(f3) & overwrite == overwrite){
-    climateData <- read_csv(f3)
-  }else{
-    climateData <- climate(geometry = geometry,
+  climateData <- climate(geometry = geometry,
                            version = version,
                           processingLevel = processingLevel,
                           overwrite = overwrite)
-    write_csv(x = climateData, f3)
-  }
+
+
 
   # Sensitive populations Factors ---------------------------------------------------
-  f4 <- paste0("data/output/enviroscreenScore/",processingLevel,"/senPop_",version,".csv")
-  if(file.exists(f4) & overwrite == overwrite){
-    senPop <- read_csv(f4)
-  }else{
-    senPop <- sensitivePopulations(geometry = geometry,
+  senPop <- sensitivePopulations(geometry = geometry,
                                    ejscreen = ejscreen,
                                    version = version,
                                    processingLevel = processingLevel,
                                    overwrite = overwrite)
-    write_csv(x = senPop, f4)
-  }
 
   # Socioeconomic Factors ---------------------------------------------------
-  f5 <- paste0("data/output/enviroscreenScore/",processingLevel,"/socEco_",version,".csv")
-  if(file.exists(f5) & overwrite == overwrite){
-    socEco <- read_csv(f5)
-  }else{
-    socEco <- socioEconomicFactors(geometry = geometry,
+  socEco <- socioEconomicFactors(geometry = geometry,
                                     version = version,
                                    acsData = acsData,
                                    ejscreen = ejscreen,
                                     processingLevel = processingLevel,
-                                    overwrite = overwrite
-                                  )
-    write_csv(x = socEco, f5)
-  }
+                                    overwrite = overwrite)
+
 
   # merge all datasets on geoid
   # apply function across all features

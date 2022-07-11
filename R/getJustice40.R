@@ -16,7 +16,7 @@ getJustice40 <- function(filePath, removeNativeLand, overwrite){
       st_drop_geometry()%>%
       dplyr::select("County_Name" = "NAME", "COUNTYFP")
 
-    ct <- sf::st_read("data/output/spatialLayers/censusTract/coloradoCensusTracts.geojson") %>%
+    ct <- sf::st_read("data/output/spatialLayers/censusTracts/coloradoCensusTracts.geojson") %>%
       dplyr::left_join(y = county, by = ("COUNTYFP")) %>%
       dplyr::left_join(d1, by = c("GEOID" = "Census tract ID"))%>%
       dplyr::select("GEOID","County_Name" , "Total threshold criteria exceeded", "Identified as disadvantaged")%>%

@@ -56,5 +56,5 @@ for(i in geoms){
 shinyData(removeNativeLand = TRUE,
           removeZeroPop = TRUE,
           version = version,
-          spanish = TRUE,
+          spanish = FALSE,
           overwrite = FALSE)

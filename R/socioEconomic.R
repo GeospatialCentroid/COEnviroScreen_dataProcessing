@@ -23,7 +23,7 @@ socioEconomicFactors <- function(geometry, acsData, ejscreen, processingLevel, v
   # there is not percent disability at census block group, so we need to pull in
   # from the census tract level data
   if(processingLevel == "censusBlockGroup"){
-    acs2 <- getACS(processingLevel = "censusTract", 2019, overwrite = FALSE)%>%
+    acs2 <- acs(processingLevel = "censusTract", version = version, overwrite = overwrite)%>%
       dplyr::select(GEOID2 = GEOID, percent_disability)
     d2 <- d2 %>%
       mutate(GEOID2 = substr(GEOID, start = 1, stop = 11))%>%
@@ -39,8 +39,10 @@ socioEconomicFactors <- function(geometry, acsData, ejscreen, processingLevel, v
   df$socEco <- df %>%
     select(contains("_pcntl"))%>%
     apply(MARGIN = 1, FUN = gm_mean)
+  # write out features
+  write_csv(df, file)
   }else{
-    df <- read.csv(file)
+    df <- read_csv(file)
   }
   return(df)
 }
