@@ -26,7 +26,7 @@ createFolderStructure()
 getGeometryLayers()
 
 #set version
-version <- 1
+version <- 2
 
 # set census API key
 # tidycensus::census_api_key(key = "your key")
@@ -36,6 +36,7 @@ version <- 1
 # process data  -----------------------------------------------------------
 ## run single or multiple geometries
 geoms <- c("county","censusTract","censusBlockGroup")
+
 
 # running single component
 tic()

@@ -1,6 +1,6 @@
 
 
-socioEconomicFactors <- function(geometry, acsData, ejscreen, processingLevel, version, overwrite = FALSE){
+socioEconomicFactors <- function(geometry, acsData, ejscreen, processingLevel, version, overwrite = overwrite){
   file <- paste0("data/output/enviroscreenScore/", processingLevel,"/socioEconomic_",version,".csv")
 
   if(!file.exists(file) || overwrite == TRUE){
@@ -8,7 +8,7 @@ socioEconomicFactors <- function(geometry, acsData, ejscreen, processingLevel, v
   # run functions
     cat("ejscreen")
     d1 <- ejscreen %>%
-    dplyr::select("GEOID","peopleOfColor","highSchool")
+      dplyr::select("GEOID","peopleOfColor","highSchool")
 
     cat("acsData")
     d2 <- acsData %>%

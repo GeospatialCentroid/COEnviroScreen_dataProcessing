@@ -1,16 +1,17 @@
 
 
 finalComponentScore <- function(dataframes){
-  
-  # generate the group componet scores 
+
+  # generate the group componet scores
   df <- dataframes %>%
-    purrr::reduce(dplyr::left_join, by = "GEOID")%>%
+    purrr::reduce(dplyr::left_join, by = "GEOID") %>%
     rowwise()%>%
     dplyr::mutate(
       pollClimBurden =  sum(envExp, (envEff * 0.5) , (climate *0.5),na.rm=TRUE)/2,
-      popCharacteristic = sum(senPop, socEco, na.rm = TRUE)/2)
-  
-  # calculated the scaled values to produce the final score 
+      popCharacteristic = sum(senPop, socEco, na.rm = TRUE)/2
+      )
+
+  # calculated the scaled values to produce the final score
   df$scaledpollClimate <- (df$pollClimBurden/max(df$pollClimBurden))*10
   df$scaledPopChar <- (df$popCharacteristic/max(df$popCharacteristic))*10
   df$finalScore <- df$scaledpollClimate * df$scaledPopChar
@@ -25,6 +26,6 @@ finalComponentScore <- function(dataframes){
   df$pollClimBurden_Pctl <- cume_dist(df$pollClimBurden)*100
   df$popCharacteristic_Pctl <- cume_dist(df$popCharacteristic)*100
   df$finalScore_Pctl <- cume_dist(df$finalScore)*100
-  
+
   return(df)
 }
