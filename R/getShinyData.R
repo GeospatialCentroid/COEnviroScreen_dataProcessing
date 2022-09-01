@@ -32,7 +32,7 @@ getShinyData <- function(removeNativeLand, removeZeroPop, version, spanish){
   # census tract
   censusTract <- sf::st_read("data/output/spatialLayers/censusTracts/coloradoCensusTracts.geojson")%>%
     dplyr::mutate(area = "Census Tract",
-                  areaSpanish = "Sector censal",
+                  areaSpanish = "área census",
                   geoid2 =stringr::str_sub(GEOID,start = 1, end = 5))%>%
     dplyr::left_join( y = countyName, by = c("geoid2" = "GEOID"))%>%
     dplyr::mutate(name = paste0(cNAME, " County"))%>%
@@ -44,7 +44,7 @@ getShinyData <- function(removeNativeLand, removeZeroPop, version, spanish){
   # census block group
   censusBlockGroup <- sf::st_read("data/output/spatialLayers/censusBlockGroups/coloradoCensusBlockGroups.geojson")%>%
     dplyr::mutate(area = "Census Block Group",
-                  areaSpanish = "Grupo de bloques censales",
+                  areaSpanish = "Grupo de manzanas censales",
                   geoid2 =stringr::str_sub(GEOID,start = 1, end = 5))%>%
     dplyr::left_join( y = countyName, by = c("geoid2" = "GEOID"))%>%
     dplyr::mutate(name = paste0( cNAME, " County"))%>%
