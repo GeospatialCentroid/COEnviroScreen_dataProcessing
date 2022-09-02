@@ -21,7 +21,7 @@ getJustice40 <- function(filePath, removeNativeLand, overwrite){
       dplyr::left_join(d1, by = c("GEOID" = "Census tract ID"))%>%
       dplyr::select("GEOID","County_Name" , "Total threshold criteria exceeded", "Identified as disadvantaged")%>%
       dplyr::filter(`Identified as disadvantaged` == TRUE)%>%
-      rmapshaper::ms_simplify()
+      rmapshaper::ms_simplify(keep_shapes = TRUE)
 
     if(removeNativeLand == TRUE){
       censusTractsNative <- c("08083941100","08067940400", "08067940300", "08007940400")

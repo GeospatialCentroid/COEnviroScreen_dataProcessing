@@ -23,7 +23,7 @@ getShinyData <- function(removeNativeLand, removeZeroPop, version, spanish){
                   name = paste0(NAME, " County"))%>%
     dplyr::select(GEOID, "cNAME" = NAME,name, area,areaSpanish)%>%
     st_transform(crs = st_crs(4326))%>%
-    rmapshaper::ms_simplify()
+    rmapshaper::ms_simplify(keep_shapes = TRUE)
 
 
     # grap county name to attached to each lower geometry
@@ -38,7 +38,7 @@ getShinyData <- function(removeNativeLand, removeZeroPop, version, spanish){
     dplyr::mutate(name = paste0(cNAME, " County"))%>%
     dplyr::select(GEOID, name, area,areaSpanish)%>%
     st_transform(crs = st_crs(4326))%>%
-    rmapshaper::ms_simplify()
+    rmapshaper::ms_simplify(keep_shapes = TRUE)
 
 
   # census block group
@@ -50,7 +50,7 @@ getShinyData <- function(removeNativeLand, removeZeroPop, version, spanish){
     dplyr::mutate(name = paste0( cNAME, " County"))%>%
     dplyr::select(GEOID, name, area,areaSpanish)%>%
     st_transform(crs = st_crs(4326))%>%
-    rmapshaper::ms_simplify()
+    rmapshaper::ms_simplify(keep_shapes = TRUE)
 
   ### compile names based on the county relationship
 
@@ -83,7 +83,6 @@ getShinyData <- function(removeNativeLand, removeZeroPop, version, spanish){
     features <- acsData %>%
       dplyr::filter(`Total Population` == 0)%>%
       pull(var = GEOID)
-    features <- c()
     df <- df[!df$GEOID %in% features, ]
   }
 
