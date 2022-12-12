@@ -387,4 +387,3 @@ getShinyData <- function(removeNativeLand, removeZeroPop, version, spanish){
   }
 }
 
-
