@@ -60,7 +60,7 @@ getDI <- function(removeNativeLand, overwrite){
       dplyr::mutate(
         DI_communityCount = sum(c(Min_FLAG,
                                   FLP_FLAG,
-                                  Burdened_FLAG)),
+                                  Burdened_FLAG), na.rm = TRUE),
         DI_community = case_when(
           DI_communityCount != 0 ~ 1,
           TRUE ~ 0
@@ -86,7 +86,7 @@ getDI <- function(removeNativeLand, overwrite){
       dplyr::left_join(bg_co, by = "GEOID")%>%
       dplyr::filter(Min_FLAG != 0 | FLP_FLAG != 0 | Burdened_FLAG !=0 )%>%
       st_transform(crs = st_crs(4326))%>%
-      rmapshaper::ms_simplify()
+      rmapshaper::ms_simplify(keep_shapes = TRUE)
 
     #write feature
     saveRDS(object = geom, file = pathToData)

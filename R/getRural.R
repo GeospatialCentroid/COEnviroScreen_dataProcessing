@@ -8,7 +8,7 @@ getRural <- function(){
   # add condition to spatial object  ----------------------------------------
   geometry <-  sf::st_read("data/output/spatialLayers/county/coloradoCounties.geojson")%>%
     st_transform(crs = st_crs(4326))%>%
-    rmapshaper::ms_simplify()
+    rmapshaper::ms_simplify(keep_shapes = TRUE)
   # define rural features
   geometry$rural = ifelse(geometry$NAME %in% urban, "No", "Yes")
   # select columns of interest
