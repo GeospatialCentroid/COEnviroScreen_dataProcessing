@@ -23,7 +23,7 @@ getShinyData <- function(removeNativeLand, removeZeroPop, version, spanish){
                   name = paste0(NAME, " County"))%>%
     dplyr::select(GEOID, "cNAME" = NAME,name, area,areaSpanish)%>%
     st_transform(crs = st_crs(4326))%>%
-    rmapshaper::ms_simplify()
+    rmapshaper::ms_simplify(keep_shapes = TRUE)
 
 
     # grap county name to attached to each lower geometry
@@ -32,13 +32,13 @@ getShinyData <- function(removeNativeLand, removeZeroPop, version, spanish){
   # census tract
   censusTract <- sf::st_read("data/output/spatialLayers/censusTracts/coloradoCensusTracts.geojson")%>%
     dplyr::mutate(area = "Census Tract",
-                  areaSpanish = "área census",
+                  areaSpanish = "Área censal",
                   geoid2 =stringr::str_sub(GEOID,start = 1, end = 5))%>%
     dplyr::left_join( y = countyName, by = c("geoid2" = "GEOID"))%>%
     dplyr::mutate(name = paste0(cNAME, " County"))%>%
     dplyr::select(GEOID, name, area,areaSpanish)%>%
     st_transform(crs = st_crs(4326))%>%
-    rmapshaper::ms_simplify()
+    rmapshaper::ms_simplify(keep_shapes = TRUE)
 
 
   # census block group
@@ -50,7 +50,7 @@ getShinyData <- function(removeNativeLand, removeZeroPop, version, spanish){
     dplyr::mutate(name = paste0( cNAME, " County"))%>%
     dplyr::select(GEOID, name, area,areaSpanish)%>%
     st_transform(crs = st_crs(4326))%>%
-    rmapshaper::ms_simplify()
+    rmapshaper::ms_simplify(keep_shapes = TRUE)
 
   ### compile names based on the county relationship
 
@@ -83,7 +83,6 @@ getShinyData <- function(removeNativeLand, removeZeroPop, version, spanish){
     features <- acsData %>%
       dplyr::filter(`Total Population` == 0)%>%
       pull(var = GEOID)
-    features <- c()
     df <- df[!df$GEOID %in% features, ]
   }
 
@@ -387,5 +386,4 @@ getShinyData <- function(removeNativeLand, removeZeroPop, version, spanish){
     saveRDS(df, file = paste0("data/shinyContent/allScores_",version,"_spanish.rds"))
   }
 }
-
 
