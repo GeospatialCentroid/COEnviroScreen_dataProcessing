@@ -8,6 +8,15 @@ getDI <- function(removeNativeLand, overwrite){
   if(file.exists(pathToData) & overwrite == FALSE){
     return(paste0("The DI community spatial data exists and can be found ", pathToData))
   }else{
+
+    bgscores <- read.csv(paste0("data/output/enviroscreenScore/censusBlockGroup_", version, ".csv")) %>%
+      mutate(GEOID = paste0("0", as.character(GEOID)))%>%
+      select(GEOID, EnviroScreen_Pctl = finalScore_Pctl)
+
+    bgscores80 <- bgscores %>%
+      filter(EnviroScreen_Pctl > 80)
+
+
     bg_co <- get_acs(geography = "block group",
                      variables = c("B01001_001", # total pop, age&sex
                                    "C17002_001", # total pop whose income to poverty ratio was determined
@@ -54,19 +63,26 @@ getDI <- function(removeNativeLand, overwrite){
                B25091_019+B25091_020+B25091_021+B25091_022, # >30% renters, mortgaged, nonmortgaged
              HH_Burdened_Pct = HH_Burdened/HHUnits,
              Burdened_FLAG = ifelse(HH_Burdened_Pct > .4, 1, 0),
+             Score_FLAG = ifelse(GEOID %in% bgscores80$GEOID, 1, 0)
       )%>%
-      dplyr::select(GEOID,Min_PCT,Min_FLAG,Pov_PCT,FLP_FLAG,HH_Burdened_Pct,Burdened_FLAG)%>%
+      dplyr::select(GEOID,Min_PCT,Min_FLAG,Pov_PCT,FLP_FLAG,HH_Burdened_Pct,Burdened_FLAG, Score_FLAG)%>%
       dplyr::rowwise()%>%
       dplyr::mutate(
         DI_communityCount = sum(c(Min_FLAG,
                                   FLP_FLAG,
-                                  Burdened_FLAG), na.rm = TRUE),
+                                  Burdened_FLAG,
+                                  Score_FLAG), na.rm = TRUE),
         DI_community = case_when(
           DI_communityCount != 0 ~ 1,
           TRUE ~ 0
         )
 
       )
+
+    bg_co <- merge(bg_co, bgscores, by = "GEOID", all.x = TRUE) %>%
+      select(GEOID,Min_PCT,Min_FLAG,Pov_PCT,FLP_FLAG,HH_Burdened_Pct,Burdened_FLAG,
+             EnviroScreen_Pctl, Score_FLAG, DI_communityCount, DI_community)
+
 
 
     if(removeNativeLand == TRUE){
@@ -84,7 +100,7 @@ getDI <- function(removeNativeLand, overwrite){
     geom <- sf::st_read("data/output/spatialLayers/censusBlockGroups/coloradoCensusBlockGroups.geojson")%>%
       dplyr::select(GEOID)%>%
       dplyr::left_join(bg_co, by = "GEOID")%>%
-      dplyr::filter(Min_FLAG != 0 | FLP_FLAG != 0 | Burdened_FLAG !=0 )%>%
+      dplyr::filter(Min_FLAG != 0 | FLP_FLAG != 0 | Burdened_FLAG !=0 | Score_FLAG != 0)%>%
       st_transform(crs = st_crs(4326))%>%
       rmapshaper::ms_simplify(keep_shapes = TRUE)
 

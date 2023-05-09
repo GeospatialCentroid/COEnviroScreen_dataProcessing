@@ -9,7 +9,7 @@ shinyData <- function(removeNativeLand,removeZeroPop,version,spanish, overwrite)
   # oil and gas communities
   getOilGas()
   # justice 40
-  getJustice40(filePath = "data/input/spatialLayers/justice40/communities-2022-03-21-1359GMT.csv",
+  getJustice40(filePath = "data/input/spatialLayers/justice40/1.0-communities.csv",
                removeNativeLand = removeNativeLand,
                overwrite = overwrite)
   # di communities
