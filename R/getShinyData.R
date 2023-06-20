@@ -2,6 +2,8 @@
 # compile multiple geography levels into single file for upload to the shiny app
 # 20211129
 # carverd@colostate.edu
+#
+# update 20230511 - bringing in new DI layers
 ###
 
 getShinyData <- function(removeNativeLand, removeZeroPop, version, spanish){
@@ -192,36 +194,51 @@ getShinyData <- function(removeNativeLand, removeZeroPop, version, spanish){
 
     # convert to an sf object
     df <- df %>%
-      mutate(across(where(is.numeric), round, digits=2))%>%
+      mutate(across(where(is.numeric), round, digits=3))%>%
       sf::st_as_sf()
 
     # add label for Coal, oil/gas, rural, justice 40, and di community -------------------------------------
-    coal <- readRDS("data/shinyContent/coalCommunity.rds")%>%
-      dplyr::select("GEOID","Coal Community" = "coal")%>%
-      st_drop_geometry()
-    og <- readRDS("data/shinyContent/oilgasCommunity.rds")%>%
-      dplyr::select("GEOID","Oil and Gas Community" = "oilGas")%>%
-      st_drop_geometry()
-    rural <- readRDS("data/shinyContent/ruralCommunity.rds")%>%
-      dplyr::select("GEOID","Rural" = "rural")%>%
-      st_drop_geometry()
+    # coal <- readRDS("data/shinyContent/coalCommunity.rds")%>%
+    #   dplyr::select("GEOID","Coal Community" = "coal")%>%
+    #   st_drop_geometry()
+    # og <- readRDS("data/shinyContent/oilgasCommunity.rds")%>%
+    #   dplyr::select("GEOID","Oil and Gas Community" = "oilGas")%>%
+    #   st_drop_geometry()
+    # rural <- readRDS("data/shinyContent/ruralCommunity.rds")%>%
+    #   dplyr::select("GEOID","Rural" = "rural")%>%
+    #   st_drop_geometry()
     justice40 <- readRDS("data/shinyContent/justice40.rds") %>%
       dplyr::select("GEOID","Justice40" = "Identified.as.disadvantaged")%>%
       st_drop_geometry()
     diCommunity <- readRDS("data/shinyContent/diCommunities.rds")%>%
-      dplyr::select("GEOID","Disproportionately Impacted Community" = "DI_community")%>%
-      dplyr::mutate("Disproportionately Impacted Community" = case_when(
-        `Disproportionately Impacted Community` == 1 ~ TRUE
+      dplyr::select("GEOID","Prior Disproportionately Impacted Community (January 2023-May 2023)" = "DI_community")%>%
+      dplyr::mutate("Prior Disproportionately Impacted Community (January 2023-May 2023)" = case_when(
+        `Prior Disproportionately Impacted Community (January 2023-May 2023)` == 1 ~ TRUE
       )
       )%>%
       st_drop_geometry()
+    diCommunity_2023 <- readRDS("data/shinyContent/diCommunities_2023.rds")%>%
+      dplyr::select("GEOID","Disproportionately Impacted Community (May 2023)" = "DI_community")%>%
+      dplyr::mutate("Disproportionately Impacted Community (May 2023)" = case_when(
+        `Disproportionately Impacted Community (May 2023)` == 1 ~ TRUE
+      )
+      )%>%
+      st_drop_geometry()
+    diCommunity_AQCC<- readRDS("data/shinyContent/diCommunities_AQCC.rds")%>%
+      dplyr::select("GEOID","AQCC Reg 3 Disproportionately Impacted Community" = "DI_community")%>%
+      dplyr::mutate("AQCC Reg 3 Disproportionately Impacted Community" = case_when(
+        `AQCC Reg 3 Disproportionately Impacted Community` == 1 ~ TRUE
+      )
+      )%>%
+      st_drop_geometry()
+    # diCommunityMHC -- this is a supplemental DI definiton and won't be included in the EnviroScreen file
 
     # county level joins
-    df$GEOID2 <- str_sub(df$GEOID, 1,5)
-    df <- dplyr::left_join(x = df ,y = coal, by = c("GEOID2" = "GEOID"))%>%
-      dplyr::left_join(y = og, by = c("GEOID2" = "GEOID"))%>%
-      dplyr::left_join(y = rural, by = c("GEOID2" = "GEOID"))%>%
-      dplyr::select(-"GEOID2")
+    # df$GEOID2 <- str_sub(df$GEOID, 1,5)
+    # df <- dplyr::left_join(x = df ,y = coal, by = c("GEOID2" = "GEOID"))%>%
+    #   dplyr::left_join(y = og, by = c("GEOID2" = "GEOID"))%>%
+    #   dplyr::left_join(y = rural, by = c("GEOID2" = "GEOID"))%>%
+    #   dplyr::select(-"GEOID2")
 
     # census tract level joins
     df$GEOID3 <- str_sub(df$GEOID, 1,11)
@@ -229,12 +246,15 @@ getShinyData <- function(removeNativeLand, removeZeroPop, version, spanish){
 
     # census block group join
     df <- dplyr::left_join(x = df ,y = diCommunity, by = c("GEOID" = "GEOID"))
+    df <- dplyr::left_join(x = df ,y = diCommunity_2023, by = c("GEOID" = "GEOID"))
+    df <- dplyr::left_join(x = df ,y = diCommunity_AQCC, by = c("GEOID" = "GEOID"))
 
     #Join Population Data
     df <- dplyr::left_join(x = df, y = acsData, by = "GEOID")
 
     # rdata delete_dsn
     saveRDS(df, file = paste0("data/shinyContent/allScores_",version,".rds"))
+
   }else{
     # select to define order and rename features
     df <- df %>%
@@ -340,36 +360,50 @@ getShinyData <- function(removeNativeLand, removeZeroPop, version, spanish){
 
     # convert to an sf object
     df <- df %>%
-      mutate(across(where(is.numeric), round, digits=2))%>%
+      mutate(across(where(is.numeric), round, digits=3))%>%
       sf::st_as_sf()
 
     # add label for Coal, oil/gas, rural, justice 40, and di community -------------------------------------
-    coal <- readRDS("data/shinyContent/coalCommunity.rds")%>%
-      dplyr::select("GEOID","Comunidad con carbón" = "coal")%>%
-      st_drop_geometry()
-    og <- readRDS("data/shinyContent/oilgasCommunity.rds")%>%
-      dplyr::select("GEOID","Comunidad con petróleo y gas" = "oilGas")%>%
-      st_drop_geometry()
-    rural <- readRDS("data/shinyContent/ruralCommunity.rds")%>%
-      dplyr::select("GEOID","Comunidad rural" = "rural")%>%
-      st_drop_geometry()
+    # coal <- readRDS("data/shinyContent/coalCommunity.rds")%>%
+    #   dplyr::select("GEOID","Comunidad con carbón" = "coal")%>%
+    #   st_drop_geometry()
+    # og <- readRDS("data/shinyContent/oilgasCommunity.rds")%>%
+    #   dplyr::select("GEOID","Comunidad con petróleo y gas" = "oilGas")%>%
+    #   st_drop_geometry()
+    # rural <- readRDS("data/shinyContent/ruralCommunity.rds")%>%
+    #   dplyr::select("GEOID","Comunidad rural" = "rural")%>%
+    #   st_drop_geometry()
     justice40 <- readRDS("data/shinyContent/justice40.rds") %>%
       dplyr::select("GEOID","Comunidad de Justice40" = "Identified.as.disadvantaged")%>%
       st_drop_geometry()
     diCommunity <- readRDS("data/shinyContent/diCommunities.rds")%>%
-      dplyr::select("GEOID","Comunidad afectada de manera desproporcionada" = "DI_community")%>%
-      dplyr::mutate("Comunidad afectada de manera desproporcionada" = case_when(
-        `Comunidad afectada de manera desproporcionada` == 1 ~ TRUE
+      dplyr::select("GEOID","Comunidad afectada de manera desproporcionada previa (enero 2023 - mayo 2023)" = "DI_community")%>%
+      dplyr::mutate("Comunidad afectada de manera desproporcionada previa (enero 2023 - mayo 2023)" = case_when(
+        `Comunidad afectada de manera desproporcionada previa (enero 2023 - mayo 2023)` == 1 ~ TRUE
+      )
+      )%>%
+      st_drop_geometry()
+    diCommunity_2023 <- readRDS("data/shinyContent/diCommunities_2023.rds")%>%
+      dplyr::select("GEOID","Comunidad afectada de manera desproporcionada (mayo 2023)" = "DI_community")%>%
+      dplyr::mutate("Comunidad afectada de manera desproporcionada (mayo 2023)" = case_when(
+        `Comunidad afectada de manera desproporcionada (mayo 2023)` == 1 ~ TRUE
+      )
+      )%>%
+      st_drop_geometry()
+    diCommunity_AQCC <- readRDS("data/shinyContent/diCommunities_AQCC.rds")%>%
+      dplyr::select("GEOID","Comunidad afectada de manera desproporcionada - AQCC Reg 3" = "DI_community")%>%
+      dplyr::mutate("Comunidad afectada de manera desproporcionada - AQCC Reg 3" = case_when(
+        `Comunidad afectada de manera desproporcionada - AQCC Reg 3` == 1 ~ TRUE
       )
       )%>%
       st_drop_geometry()
 
     # county level joins
-    df$GEOID2 <- str_sub(df$GEOID, 1,5)
-    df <- dplyr::left_join(x = df ,y = coal, by = c("GEOID2" = "GEOID"))%>%
-      dplyr::left_join(y = og, by = c("GEOID2" = "GEOID"))%>%
-      dplyr::left_join(y = rural, by = c("GEOID2" = "GEOID"))%>%
-      dplyr::select(-"GEOID2")
+    # df$GEOID2 <- str_sub(df$GEOID, 1,5)
+    # df <- dplyr::left_join(x = df ,y = coal, by = c("GEOID2" = "GEOID"))%>%
+    #   dplyr::left_join(y = og, by = c("GEOID2" = "GEOID"))%>%
+    #   dplyr::left_join(y = rural, by = c("GEOID2" = "GEOID"))%>%
+    #   dplyr::select(-"GEOID2")
 
     # census tract level joins
     df$GEOID3 <- str_sub(df$GEOID, 1,11)
@@ -377,6 +411,8 @@ getShinyData <- function(removeNativeLand, removeZeroPop, version, spanish){
 
     # census block group join
     df <- dplyr::left_join(x = df ,y = diCommunity, by = c("GEOID" = "GEOID"))
+    df <- dplyr::left_join(x = df ,y = diCommunity_2023, by = c("GEOID" = "GEOID"))
+    df <- dplyr::left_join(x = df ,y = diCommunity_AQCC, by = c("GEOID" = "GEOID"))
 
     #Join Population Data
     names(acsData) <- c("GEOID", "Total de la población")
